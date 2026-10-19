@@ -1,0 +1,12 @@
+.git
+.env
+.env.*
+data
+backups
+tests
+__pycache__
+*.pyc
+*.sqlite3*
+.venv
+README.md
+deploy

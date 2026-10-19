@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8fc">
+  <meta name="description" content="Louis 的私人文件与文本传输空间">
+  <title>传输空间 · Louis</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+  <section id="login-view" class="login-view" hidden>
+    <div class="login-decoration" aria-hidden="true"><div class="float-card">Aa<span>随手记下，随处打开。</span></div><div class="float-file">↗</div><div class="decoration-label">YOUR PERSONAL TRANSFER SPACE</div></div>
+    <main class="login-panel">
+      <div class="brand"><span class="brand-mark">↗</span><span>传输空间<span class="brand-sub">LOUIS / PERSONAL</span></span></div>
+      <div class="login-copy"><span class="eyebrow">WELCOME BACK</span><h1>在设备之间，<br>让内容自由流动。</h1><p>文件、链接、灵感。放在这里，下个设备接着用。</p></div>
+      <form id="login-form">
+        <label for="username">用户名</label><input id="username" name="username" autocomplete="username" placeholder="输入用户名" required maxlength="100">
+        <label for="password">密码</label><input id="password" name="password" type="password" autocomplete="current-password" placeholder="输入密码" required maxlength="500">
+        <p id="login-error" class="error" role="alert"></p><button id="login-button" class="primary login-button" type="submit">登录我的空间 <span>↗</span></button>
+      </form>
+      <p class="private-note"><span class="lock-dot"></span> 私人空间 · 仅限本人访问</p>
+    </main>
+  </section>
+
+  <div id="workspace" class="workspace" hidden>
+    <aside class="sidebar">
+      <a class="brand" href="/" aria-label="传输空间首页"><span class="brand-mark">↗</span><span>传输空间<span class="brand-sub">LOUIS / PERSONAL</span></span></a>
+      <div class="nav-label">我的内容</div>
+      <nav id="filters" aria-label="内容类型">
+        <button class="nav-item active" data-filter="all"><span class="nav-icon">▦</span>全部内容<span id="count-all" class="nav-count">0</span></button>
+        <button class="nav-item" data-filter="file"><span class="nav-icon">▱</span>文件<span id="count-file" class="nav-count">0</span></button>
+        <button class="nav-item" data-filter="text"><span class="nav-icon text-icon">T</span>文本<span id="count-text" class="nav-count">0</span></button>
+      </nav>
+      <div class="sidebar-bottom"><div class="storage"><div class="storage-heading"><span>存储空间</span><span id="storage-percent">0%</span></div><progress id="storage-bar" value="0" max="100" aria-label="已用存储空间"></progress><p><strong id="storage-used">0 B</strong> / <span id="storage-total">20 GB</span></p></div><div class="account"><div class="avatar">L</div><div><strong id="account-name">leader</strong><span>私人账号</span></div><button id="logout" class="icon-button" aria-label="退出登录" title="退出登录">↪</button></div></div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><span class="topbar-label">一个空间，连接你的每台设备。</span><span class="private-pill"><span class="lock-dot"></span> 仅自己可见</span></header>
+      <section class="content">
+        <div class="page-heading"><div><div class="eyebrow">YOUR EVERYDAY DROPZONE</div><h1 id="page-title">全部内容<span class="heading-dot">.</span></h1><p>把此刻的内容，交给下一台设备。</p></div><button id="new-upload" class="primary"><span class="plus">+</span> 上传内容</button></div>
+        <div class="toolbar"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索文件名或文本内容" aria-label="搜索内容" maxlength="200"><kbd>/</kbd></label><div class="sort-label"><span id="result-count">0 项内容</span><span class="toolbar-divider"></span><span>↓ 最新优先</span><button id="refresh" class="icon-button" aria-label="刷新内容" title="刷新内容">↻</button></div></div>
+        <div id="loading" class="state-message">正在打开你的空间…</div>
+        <div id="load-error" class="load-error" role="alert" hidden><span>暂时无法加载内容，请检查网络后刷新。</span><button id="retry" class="secondary">重试</button></div>
+        <div id="items-grid" class="items-grid" aria-live="polite"></div>
+        <div id="empty" class="empty-state" hidden><div class="empty-art" aria-hidden="true"><span>↗</span><span>+</span></div><h2 id="empty-title">给下一台设备，留点内容。</h2><p id="empty-copy">上传一个文件，或放下一段文字。<br>无论手机还是电脑，登录就能接着用。</p><button id="empty-upload" class="secondary">上传第一份内容 ↗</button></div>
+        <footer class="content-footer"><span id="footer-usage">你的内容，随时就位。</span><span>PRIVATE SPACE / LOUIS</span></footer>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="upload-dialog" aria-labelledby="upload-title">
+    <div class="dialog-heading"><div><span class="eyebrow">ADD TO YOUR SPACE</span><h2 id="upload-title">上传内容</h2></div><button class="icon-button close-dialog" aria-label="关闭">×</button></div>
+    <div class="tabs" role="tablist"><button id="file-tab" class="tab active" role="tab" aria-selected="true" aria-controls="file-pane">上传文件</button><button id="text-tab" class="tab" role="tab" aria-selected="false" aria-controls="text-pane">保存文本</button></div>
+    <div id="file-pane" role="tabpanel" aria-labelledby="file-tab"><label id="dropzone" class="dropzone"><input id="file-input" type="file" multiple><span class="upload-symbol" aria-hidden="true">↑</span><strong>点击选择，或将文件拖到这里</strong><span>支持任意文件 · 可多选</span></label><div id="selected-files" class="selected-files"></div><p class="field-note" id="available-space">可用空间：20 GB</p></div>
+    <div id="text-pane" role="tabpanel" aria-labelledby="text-tab" hidden><label class="field-label" for="text-title">标题 <span>可选</span></label><input id="text-title" placeholder="给这段文字起个名字" maxlength="120"><label class="field-label" for="text-body">文本内容</label><textarea id="text-body" placeholder="粘贴链接、记录想法，或者留一段话给自己…" rows="7" maxlength="1048576"></textarea><div class="text-meta"><span>保留原始格式 · 最多 1MB</span><span id="text-count">0 字</span></div></div>
+    <div id="upload-progress" class="upload-progress" hidden><div><span id="progress-label">正在上传…</span><span id="progress-value">0%</span></div><progress id="upload-bar" value="0" max="100" aria-label="上传进度"></progress></div>
+    <p id="upload-error" class="error" role="alert"></p><div class="dialog-actions"><button id="cancel-upload" class="secondary">取消</button><button id="submit-upload" class="primary">开始上传 <span>↑</span></button></div>
+  </dialog>
+  <dialog id="text-dialog" class="text-dialog" aria-labelledby="preview-title"><div class="dialog-heading"><div><span class="eyebrow">TEXT NOTE</span><h2 id="preview-title">文本</h2></div><button class="icon-button close-dialog" aria-label="关闭">×</button></div><pre id="preview-body"></pre><div class="dialog-actions"><a id="preview-download" class="secondary" download>下载 .txt</a><button id="preview-copy" class="primary">复制全文</button></div></dialog>
+  <dialog id="delete-dialog" class="confirm-dialog" aria-labelledby="delete-title"><div class="dialog-heading"><h2 id="delete-title">删除这份内容？</h2><button class="icon-button close-dialog" aria-label="关闭">×</button></div><p id="delete-name"></p><p class="muted">删除后将释放空间，且无法恢复。</p><div class="dialog-actions"><button id="cancel-delete" class="secondary">取消</button><button id="confirm-delete" class="danger">确认删除</button></div><p id="delete-error" class="error" role="alert"></p></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>
